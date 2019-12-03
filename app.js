@@ -1,10 +1,20 @@
+const axios = require("axios");
 var fs = require("fs");
 
-// var obj = JSON.parse(fs.readFileSync("hollidays.json", "utf8"));
-// console.log(obj);
+const getData = () => {
+  return axios.get(`https://date.nager.at/api/v2/publicholidays/2020/FR`);
+};
 
-fs.readFile("./hollidays.json", "utf8", (err, data) => {
-  if (err) throw err;
-  console.log(data);
-});
-console.log("toto");
+getPromiseData = async () => {
+  const res = await getData();
+  fs.writeFile(
+    "./hollidays.json",
+    JSON.stringify(res.data),
+    { encoding: "utf8", flag: "w" },
+    err => {
+      if (err) throw err;
+    }
+  );
+};
+
+getPromiseData();
